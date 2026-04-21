@@ -1,65 +1,52 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function useFoodSearch() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const requestIdRef = useRef(0);
-
   const searchFood = async (query) => {
     if (!query.trim()) return;
 
     setLoading(true);
 
-    const currentRequestId = ++requestIdRef.current;
-
     try {
-      let response = await axios.get("/api/cgi/search.pl", {
-        params: {
-          search_terms: query,
-          json: 1,
-          page_size: 10,
-        },
-      });
+      const fetchData = async () => {
+        return await axios.get(
+          "https://world.openfoodfacts.org/cgi/search.pl",
+          {
+            params: {
+              search_terms: query,
+              json: 1,
+              page_size: 10,
+            },
+          }
+        );
+      };
 
-      if (currentRequestId !== requestIdRef.current) return;
+      let products = [];
+      let attempts = 0;
 
-      let products = response.data.products || [];
+      // 🔥 Retry up to 3 times
+      while (products.length === 0 && attempts < 3) {
+        console.log("API attempt:", attempts + 1);
 
-      // 🔥 retry once if empty (API sometimes fails first time)
-      if (products.length === 0) {
-        const retry = await axios.get("/api/cgi/search.pl", {
-          params: {
-            search_terms: query,
-            json: 1,
-            page_size: 10,
-          },
-        });
+        const res = await fetchData();
+        products = res.data.products || [];
 
-        products = retry.data.products || [];
+        if (products.length === 0) {
+          await new Promise((res) => setTimeout(res, 400));
+        }
+
+        attempts++;
       }
 
-      // ✅ simple + safe filter
-      const filtered = products.filter(
-        (p) => p.product_name || p.brands
-      );
+      console.log("FINAL PRODUCTS:", products);
 
-      const finalResults =
-        filtered.length > 0 ? filtered : products;
-
-      setResults(finalResults.slice(0, 10));
-
+      setResults(products);
     } catch (err) {
-      console.error(err);
-
-      // fallback instead of error UI
-      setTimeout(() => {
-        setResults([]);
-        setLoading(false);
-      }, 1000);
-
-      return;
+      console.error("API ERROR:", err);
+      setResults([]);
     }
 
     setLoading(false);

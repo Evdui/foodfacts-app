@@ -1,25 +1,41 @@
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import CardActionArea from "@mui/material/CardActionArea";
+import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
 function FoodCard({ product }) {
   const navigate = useNavigate();
 
-  return (
-    <div
-      className="food-card"
-      onClick={() => navigate(`/product/${product.code}`)}
-    >
-      <div className="card-image">
-        <img
-          src={product.image_small_url || "https://via.placeholder.com/150"}
-          alt={product.product_name}
-        />
-      </div>
+  const handleClick = () => {
+    navigate(`/product/${product.code}`, { state: { product } });
+  };
 
-      <div className="card-content">
-        <h3>{product.product_name || "No Name"}</h3>
-        <p>{product.brands || "Unknown Brand"}</p>
-      </div>
-    </div>
+  return (
+    <Card sx={{ height: "100%", borderRadius: 3 }}>
+      <CardActionArea onClick={handleClick}>
+        {product.image_small_url && (
+          <CardMedia
+            component="img"
+            height="140"
+            image={product.image_small_url}
+            alt={product.product_name}
+            sx={{ objectFit: "contain", p: 1 }}
+          />
+        )}
+
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            {product.product_name || "No Name"}
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            {product.brands || "Unknown Brand"}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 }
 

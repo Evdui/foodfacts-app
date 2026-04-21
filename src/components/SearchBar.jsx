@@ -1,4 +1,8 @@
 import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
 
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
@@ -22,19 +26,37 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-form">
-      <div className="search-input-wrap">
-        <input
-          type="text"
-          placeholder="Search food..."
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        mt: 2,
+      }}
+    >
+      <Box sx={{ display: "flex", gap: 2, width: "100%", maxWidth: 500 }}>
+        <TextField
+          fullWidth
+          label="Search food..."
+          variant="outlined"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button type="submit">Search</button>
-      </div>
 
-      {error && <p className="validation-error">{error}</p>}
-    </form>
+        <Button variant="contained" type="submit">
+          Search
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ width: "100%", maxWidth: 500 }}>
+          {error}
+        </Alert>
+      )}
+    </Box>
   );
 }
 

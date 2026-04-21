@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { removeItem } from "../store/savedSlice";
 
-function SavedPage({ saved = [], dispatch }) {
+function SavedPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const savedItems = useSelector((state) => state.saved.items);
 
-  if (saved.length === 0) {
+  if (savedItems.length === 0) {
     return (
       <div className="page">
         <h2>Saved Items</h2>
@@ -16,8 +20,8 @@ function SavedPage({ saved = [], dispatch }) {
     <div className="page">
       <h2>Saved Items</h2>
 
-      {saved.map(item => (
-        <div key={item.code} className="food-card">
+      {savedItems.map((item) => (
+        <div key={item.code}>
           <h3>{item.product_name}</h3>
           <p>{item.brands}</p>
 
@@ -25,11 +29,7 @@ function SavedPage({ saved = [], dispatch }) {
             View Details
           </button>
 
-          <button
-            onClick={() =>
-              dispatch({ type: "REMOVE", code: item.code })
-            }
-          >
+          <button onClick={() => dispatch(removeItem(item.code))}>
             Remove
           </button>
         </div>
