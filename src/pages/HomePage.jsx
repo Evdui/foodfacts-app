@@ -1,7 +1,10 @@
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import FoodList from "../components/FoodList";
 import useFoodSearch from "../hooks/useFoodSearch";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import FoodCard from "../components/FoodCard";
 
 function HomePage() {
   const { results, loading, searchFood } = useFoodSearch();
@@ -13,23 +16,47 @@ function HomePage() {
   };
 
   return (
-    <div className="page">
-      <h2>Search Nutrition Info</h2>
+    <Container sx={{ mt: 4 }}>
+      {/* Title */}
+      <Typography variant="h5" align="center" gutterBottom>
+        Search Nutrition Info
+      </Typography>
 
+      {/* Search */}
       <SearchBar onSearch={handleSearch} />
 
-      {loading && <div className="loader"></div>}
+      {/* Loading */}
+      {loading && (
+        <Typography align="center" sx={{ mt: 2 }}>
+          Loading...
+        </Typography>
+      )}
 
+      {/* Initial State */}
       {!loading && !hasSearched && (
-        <p>Search for food to see nutrition info</p>
+        <Typography align="center" sx={{ mt: 2 }}>
+          Search for food to see nutrition info
+        </Typography>
       )}
 
+      {/* No Results */}
       {!loading && hasSearched && results.length === 0 && (
-        <p>No results found</p>
+        <Typography align="center" sx={{ mt: 2 }}>
+          No results found
+        </Typography>
       )}
 
-      <FoodList products={results} />
-    </div>
+      {/* Results Grid */}
+      {!loading && results.length > 0 && (
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          {results.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product.code}>
+              <FoodCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Container>
   );
 }
 
