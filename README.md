@@ -1,16 +1,71 @@
-# React + Vite
+# 🥗 FoodFacts
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React app that allows users to search for food items and view their nutritional information using the Open Food Facts API.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Features
 
-## React Compiler
+* 🔍 Search for any food item
+* 📊 View nutritional data (calories, protein, carbs, fat)
+* ⚡ Fast and responsive UI
+* 🔄 Loading indicator while fetching data
+* ❌ Graceful handling of empty or no results
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧠 Concepts Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* React Functional Components
+* useState Hook
+* Props & Component Communication
+* Controlled Inputs
+* Fetch API (async/await)
+* Conditional Rendering
+
+---
+
+## 🛠️ Tech Stack
+
+* React
+* Vite
+* JavaScript (ES6+)
+* CSS
+
+---
+
+## 🌐 API Used
+
+Open Food Facts API
+https://world.openfoodfacts.org/
+
+---
+
+## 📦 Installation & Setup
+
+```bash
+git clone https://github.com/Evdui/foodfacts-app.git
+cd foodfacts-app
+npm install
+npm run dev
+```
+
+---
+
+## ⚠️ Notes
+
+* API data may sometimes be inconsistent or incomplete
+* Some products may not have full nutrition details
+
+---
+
+## 📚 Learning Outcome
+
+This project helped in understanding:
+
+* API integration in React
+* Handling asynchronous data
+* Managing UI states (loading, success, empty)
+* Working with real-world messy data
+
+---
