@@ -1,13 +1,15 @@
-import FoodCard from './FoodCard'
+import FoodCard from "./FoodCard";
 
 function FoodList({ products }) {
+  if (!products || products.length === 0) return null;
+
   return (
     <div className="food-list">
-      {products.map((product) => (
-        <FoodCard key={product.code} product={product} />
+      {products.map((item, index) => (
+        <FoodCard key={item.code || index} product={item} />
       ))}
     </div>
-  )
+  );
 }
 
-export default FoodList
+export default FoodList;
